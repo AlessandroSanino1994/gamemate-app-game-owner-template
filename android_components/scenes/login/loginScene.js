@@ -48,6 +48,7 @@ class LoginForm extends Component {
           style={styles.textInput}
           returnKeyType="next"
           maxLength={30}
+          keyboardType="email-address"
           onSubmitEditing={() => {this.refs.password.focus()}}/>
         <TextInput
           ref='password'

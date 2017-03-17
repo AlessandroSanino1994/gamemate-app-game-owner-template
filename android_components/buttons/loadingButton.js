@@ -18,7 +18,7 @@ export class LoadingButton extends Component {
     } else {
       return ( //undefined handled by togglebutton automatically
         <ToggleButton style={styleReal}
-                      onPressed={onPress}
+                      onPress={onPress}
                       underlayColor={underlayColor}
                       text={text} />
       );

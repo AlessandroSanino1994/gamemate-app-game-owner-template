@@ -7,10 +7,10 @@ export class ToggleButton extends Component {
   }
 
   render() {
-    const {style, onPressed, underlayColor, text } = this.props;
+    const {style, onPress, underlayColor, text } = this.props;
     return (
       <TouchableHighlight style={style != undefined ? style : styles.default}
-                          onPress={onPressed != undefined ? onPressed : () => {alert("undefined behavior")}}
+                          onPress={onPress != undefined ? onPress : () => {alert("undefined behavior")}}
                           underlayColor={underlayColor != undefined ? underlayColor : "gray"}>
         <Text>
           {text != undefined ? text : ""}

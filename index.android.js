@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { LoginScene } from './android_components/scenes/login/loginScene.js';
-import { ApiListScene } from './android_components/scenes/game_list/gameListScene.js';
+import { GameListScene } from './android_components/scenes/game_list/gameListScene.js';
+import { GameDetailScene } from './android_components/scenes/game_detail/gameDetailScene.js';
 import { NavbarMapper } from './android_components/navbar/navbarMapper.js';
 
 import {
@@ -11,11 +12,12 @@ import {
   ToastAndroid
 } from 'react-native';
 
-console.disableYellowBox = true;
+//console.disableYellowBox = true;
 
 export default class GamemateAdmin extends Component {
   constructor(props) {
     super(props);
+    this.handleBackButtonPress = this._handleBackButtonPress.bind(this);
   }
 
   componentWillMount() {
@@ -43,16 +45,27 @@ export default class GamemateAdmin extends Component {
   }
 
   componentDidMount() {
-    BackAndroid.addEventListener('hardwareBackPress', () => { this.refs.nav.pop(); return this.refs.nav.getCurrentRoutes().length != 1;});
+    BackAndroid.addEventListener('hardwareBackPress', this.handleBackButtonPress);
   }
+
+  _handleBackButtonPress() {
+     const invalidBack = this.refs.nav != undefined &&
+                         this.refs.nav.getCurrentRoutes().length != 1;
+     if(invalidBack)
+       this.refs.nav.pop();
+     return invalidBack;
+   }
 
   renderScene(route, navigator) {
     if(route.name == 'Game Owner Platform by Gamemate')
       return <LoginScene navigator={navigator} />;
-    else if (route.name == 'Your uploaded Games')
-      return <GameListScene navigator={navigator} />;
-    else if (route.gameDetail != undefined) {
-      //return <GameDetailScene navigator={navigator} />
+    else if (route.name == 'Your uploaded Games') {
+      return <GameListScene /*newGame={route.passProps != undefined ? route.passProps.newGame : undefined}*/ navigator={navigator} />;
+    }
+    else if (route.name == 'New Game')
+      return <GameDetailScene navigator={navigator} />;
+    else if (route.name == "Game Detail" && route.passProps != undefined) {
+      return <GameDetailScene game={route.passProps.game} navigator={navigator} />;
     }
   }
 

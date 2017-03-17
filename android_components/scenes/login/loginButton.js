@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import dismissKeyboard from 'dismissKeyboard';
 import { StyleSheet, Navigator, BackAndroid, ToastAndroid, View} from 'react-native';
 import { LoadingButton } from '../../buttons/loadingButton.js';
-import { ApiListScene } from '../game_list/gameListScene.js';
+import { GameListScene } from '../game_list/gameListScene.js';
 import { Application } from '../../../shared_components/application.js';
 import { LoadingSpinner } from '../../misc/loadingSpinner.js';
 //import Realm from 'realm';
@@ -42,6 +42,7 @@ export class LoginButton extends Component {
       let response = fetch('http://gamemate.di.unito.it:8080/owner/auth', request)
       .then((response) => response.json())
       .then((responseJson) => {
+        //console.warn(JSON.stringify(responseJson));
         switch (responseJson.Type) {
           case 'ErrorDetail':
             this.setState({loading : false});
@@ -79,6 +80,7 @@ export class LoginButton extends Component {
           default:
             this.setState({loading : false});
             ToastAndroid.show('Cannot login', ToastAndroid.SHORT);
+            console.warn(JSON.stringify(response));
             break;
         }
       })
