@@ -57,10 +57,9 @@ export class GameListScene extends Component {
 
 
   _removeHandler(game) {
-    const { rows } = this.state.rows;
-    //rows.splice(rows.indexOf(token), 1);
-    for (let i = 0; i < rows.length; i++) {
-      if (rows[i].Name == game.Name) {
+    const { rows } = this.state;
+    for (i = 0; i < rows.length; i++) {
+      if (rows[i].ID == game.ID) {
         rows.splice(i, 1);
         break;
       }
@@ -88,7 +87,7 @@ export class GameListScene extends Component {
     fetch('http://gamemate.di.unito.it:8080/owner/game/list', request)
         .then((response) => response.json())
         .then((responseJson) => {
-          console.warn(JSON.stringify(responseJson));
+          //console.warn(JSON.stringify(responseJson));
           switch (responseJson.Type) {
             case 'GameOwnerGameList':
               const emptyList = responseJson.Games.length == 0,
@@ -126,7 +125,6 @@ export class GameListScene extends Component {
             loading : false
           });
           console.warn(JSON.stringify(error));
-          //alert(JSON.stringify(error));
         });
   }
 
@@ -184,6 +182,7 @@ class TokenRow extends Component {
     super(props);
     this.onRemoving = this._onRemoving.bind(this);
     this.showDetail = this._showDetail.bind(this);
+    this.removeGame = this._removeGame.bind(this);
   }
 
   componentWillMount() {
@@ -204,7 +203,6 @@ class TokenRow extends Component {
   }
 
   _removeGame() {
-      //TODO : FIX
       this.setState({removing : true});
       const request = {
         method : 'POST',
@@ -216,7 +214,7 @@ class TokenRow extends Component {
           Type : 'GameOwnerRemoveGame',
           API_Token : Application.APIToken,
           SessionToken : Application.SessionToken,
-          GameID : this.props.game.ID
+          GameID : parseInt(this.props.game.ID)
         })
       };
       //alert(JSON.stringify(JSON.parse(request.body)))
@@ -227,7 +225,7 @@ class TokenRow extends Component {
         switch (responseJson.Type) {
           case 'GameOwnerRemoveGame':
             ToastAndroid.show('Game successfully deleted', ToastAndroid.SHORT);
-            this.props.removeHandler(this.props.token);
+            this.props.removeHandler(this.props.game);
             break;
           case 'ErrorDetail':
             ToastAndroid.show('Error : ' + responseJson.ErrorMessage, ToastAndroid.SHORT);
@@ -238,7 +236,7 @@ class TokenRow extends Component {
         }
         this.setState({removing : false});
       }).catch((error) => {
-        ToastAndroid.show('Unknown error while handling response, retry later '  + JSON.stringify(error), ToastAndroid.SHORT);
+        ToastAndroid.show('Unknown error while handling response, retry later', ToastAndroid.SHORT);
         this.setState({removing : false});
         console.warn(JSON.stringify(error));
       });
@@ -261,21 +259,21 @@ class TokenRow extends Component {
     let partial = [];
     partial.push(
       <Text style={styles.rowText}>
-        {game.ID} : {game.Name}
+        {game.ID > 0 ? game.ID + " : " : ""}{game.Name}
       </Text>
     );
     if(!isDummy) {
       partial.push(
-        <View style={{flex:2, flexDirection:'row', margin:15, marginRight:10}} //TODO: verify
+        <View style={{flex:2, flexDirection:'row'}} //TODO: verify
           >
           <ToggleButton
-            style={[styles.buttonNormal, {flex:2, opacity : visible, margin:15, margin:10}]} //TODO: verify
+            style={[styles.buttonNormal, {flex:2, opacity : visible, margin:5}]} //TODO: verify
             underlayColor='gray'
             onPress={this.showDetail}
             text='Detail' />
           <LoadingButton
             loading={removing}
-            style={[styles.buttonNormal, {flex:2, opacity : visible, margin:10}]}
+            style={[styles.buttonNormal, {flex:2, opacity : visible, margin:5}]}
             underlayColor='gray'
             onPress={this.onRemoving}
             text='Remove' />
@@ -310,6 +308,7 @@ const styles = StyleSheet.create({
     paddingTop : 10,
     borderBottomWidth : 1,
     //borderBottomColor:'gray',
+    height:80,
     padding : 5
   },
   rowText : {
@@ -320,7 +319,8 @@ const styles = StyleSheet.create({
     alignItems:'center',
     justifyContent:'center',
     borderRadius:30,
-    backgroundColor : 'lightgray'
+    backgroundColor : 'lightgray',
+    height:40
   },
   loader : {
     flex:2,

@@ -89,19 +89,17 @@ export class GameDetailScene extends Component {
                      />
         </View>
       );
-      partial.push(
-        <LoadingButton style={styles.button}
-                       loading={loading}
-                       onPress={this.addNewGame}
-                       underlayColor='gray'
-                       text='Submit'/>
-      );
     }
     return (
       <View style={{flex:1}}>
         <ScrollView style={styles.container}>
           {partial}
         </ScrollView>
+        <LoadingButton style={styles.button}
+                       loading={loading}
+                       onPress={this.addNewGame}
+                       underlayColor='gray'
+                       text='Submit'/>
       </View>
     );
   }
@@ -109,6 +107,7 @@ export class GameDetailScene extends Component {
   _addNewGame() {
     const {gameName, gameDescription, maxPlayers } = this.state;
     if(gameName != '' && gameDescription != '' && maxPlayers != -1) {
+      this.setState({loading : true});
       const request = {
         method : 'POST',
         headers : {
@@ -151,6 +150,7 @@ export class GameDetailScene extends Component {
               console.warn(JSON.stringify(responseJson));
               break;
           }
+          this.setState({loading : false});
         });
     } else {
       ToastAndroid.show('Please fill all the fields', ToastAndroid.SHORT);
@@ -160,7 +160,7 @@ export class GameDetailScene extends Component {
 
 const styles = StyleSheet.create({
   container : {
-    flex:10,
+    flex:1,
     flexDirection:'column',
     marginTop:60,
     margin:5

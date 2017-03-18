@@ -57,13 +57,15 @@ export default class GamemateAdmin extends Component {
    }
 
   renderScene(route, navigator) {
-    if(route.name == 'Game Owner Platform by Gamemate')
+    if(route.name == 'Game Owner Platform by Gamemate') {
       return <LoginScene navigator={navigator} />;
+    }
     else if (route.name == 'Your uploaded Games') {
       return <GameListScene /*newGame={route.passProps != undefined ? route.passProps.newGame : undefined}*/ navigator={navigator} />;
     }
-    else if (route.name == 'New Game')
+    else if (route.name == 'New Game') {
       return <GameDetailScene navigator={navigator} />;
+    }
     else if (route.name == "Game Detail" && route.passProps != undefined) {
       return <GameDetailScene game={route.passProps.game} navigator={navigator} />;
     }
