@@ -3,7 +3,7 @@ import dismissKeyboard from 'dismissKeyboard';
 import { StyleSheet, Navigator, ToastAndroid, View } from 'react-native';
 import { LoadingButton } from '../../buttons/loadingButton.js';
 import { Application } from '../../../shared_components/application.js';
-import { ApiListScene } from '../game_list/gameListScene.js';
+import { GameListScene } from '../game_list/gameListScene.js';
 import { LoadingSpinner } from '../../misc/loadingSpinner.js';
 
 
