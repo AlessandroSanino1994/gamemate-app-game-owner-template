@@ -42,7 +42,7 @@ export class LoginButton extends Component {
       let response = fetch('http://gamemate.di.unito.it:8080/owner/auth', request)
       .then((response) => response.json())
       .then((responseJson) => {
-        //console.warn(JSON.stringify(responseJson));
+        try{
         switch (responseJson.Type) {
           case 'ErrorDetail':
             this.setState({loading : false});
@@ -82,8 +82,9 @@ export class LoginButton extends Component {
             ToastAndroid.show('Cannot login', ToastAndroid.SHORT);
             console.warn(JSON.stringify(response));
             break;
-        }
-      })
+        }} catch(ex) {console.warn(ex.message);}
+      }
+    )
       .catch((error) => {
         this.setState({loading : false});
         ToastAndroid.show('Cannot login : network error', ToastAndroid.SHORT)
