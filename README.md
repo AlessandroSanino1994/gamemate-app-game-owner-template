@@ -1,4 +1,4 @@
 # gamemate-app-game-owner-template
 Gamemate APP template for Owner Entity
 ___
-Built with React Native 0.41
+Built with React Native 0.42
