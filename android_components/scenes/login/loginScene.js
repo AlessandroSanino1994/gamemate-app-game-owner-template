@@ -20,7 +20,7 @@ export class LoginScene extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.mainTitle}>Welcome to Gamemate, Developer.</Text>
+        <Text style={styles.mainTitle}>Welcome to Gamemate, Admin.</Text>
         <Text style={styles.loginMessage}>Please log in to continue</Text>
         <LoginForm navigator={this.props.navigator}/>
       </View>
