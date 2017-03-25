@@ -12,7 +12,7 @@ import {
   ToastAndroid
 } from 'react-native';
 
-//console.disableYellowBox = true;
+console.disableYellowBox = true;
 
 export default class GamemateAdmin extends Component {
   constructor(props) {
